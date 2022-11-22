@@ -1,0 +1,30 @@
+.labelHeader {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 0.2rem 0;
+    color: #f0807f;
+}
+
+.blockButtons {
+    display: flex;
+    margin: 0.5rem 0;
+}
+
+.buttonLabels {
+    border: none;
+    background-color: inherit;
+    padding: 0.2rem 0.5rem;
+    padding-top: 0;
+
+    &:hover {
+        border-radius: 5px;
+        background-color: #f0807f;
+        color: white;
+    }
+}
+
+.select {
+    border-radius: 5px;
+    background-color: #f0807f;
+    color: white;
+}

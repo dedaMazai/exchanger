@@ -1,0 +1,15 @@
+.ExchangeCard {
+    display: flex;
+    width: 500px;
+    flex-direction: column;
+}
+
+.Icon {
+    margin-top: 1rem;
+    margin-bottom: -1rem;
+    margin-right: 3rem;
+    /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
+    margin-left: auto;
+    height: 25px;
+    fill: #f0807f;
+}
