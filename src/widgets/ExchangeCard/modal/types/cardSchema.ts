@@ -1,4 +1,4 @@
-interface ValutaObject {
+export interface ValutaObject {
     code: string;
     name: string;
 }
@@ -19,11 +19,22 @@ export enum Valuta {
     CASHRUB = 'CASHRUB',
 }
 
+export enum Filters {
+    ALL = 'Все',
+    CRYPTO = 'Криптовалюты',
+    BANK = 'Банки',
+    CASH = 'Наличные',
+}
+
 export interface CardSchema {
     valueFrom?: string;
     valueTo?: string;
     selectFrom?: Valuta;
     selectTo?: Valuta;
+    filterFrom?: Filters;
+    filterTo?: Filters;
+    optionsFrom?: ValutaObject[];
+    optionsTo?: ValutaObject[];
     directions?: ValutaObject[];
     filter?: ValutaFilter[];
 }

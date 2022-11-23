@@ -25,6 +25,18 @@ export const cardSlice = createSlice({
         setSelectTo: (state, action) => {
             state.selectTo = action.payload;
         },
+        setOptionsFrom: (state, action) => {
+            state.optionsFrom = action.payload;
+        },
+        setOptionsTo: (state, action) => {
+            state.optionsTo = action.payload;
+        },
+        setFilterFrom: (state, action) => {
+            state.filterFrom = action.payload;
+        },
+        setFilterTo: (state, action) => {
+            state.filterTo = action.payload;
+        },
     },
 });
 

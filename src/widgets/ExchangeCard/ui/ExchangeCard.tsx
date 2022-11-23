@@ -3,6 +3,12 @@ import { ExchangeField } from 'entities/ExchangeField';
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+    getDirections,
+    getFilter,
+    getFilterFrom,
+    getFilterTo,
+    getOptionsFrom,
+    getOptionsTo,
     getSelectFrom,
     getSelectTo,
     getValueFrom,
@@ -10,7 +16,7 @@ import {
 } from '../modal/selectors/getValue/getValue';
 import { cardActions } from '../modal/slice/cardSlice';
 import Exchange from 'shared/icons/exchange.svg';
-import { Valuta } from '../modal/types/CardSchema';
+import { Filters, Valuta } from '../modal/types/CardSchema';
 
 import './ExchangeCard.scss';
 
@@ -19,9 +25,14 @@ export const ExchangeCard = () => {
     const valueFrom = useSelector(getValueFrom);
     const selectFom = useSelector(getSelectFrom);
     const selectTo = useSelector(getSelectTo);
+    const optionsFrom = useSelector(getOptionsFrom);
+    const optionsTo = useSelector(getOptionsTo);
+    const filters = useSelector(getFilter);
+    const directions = useSelector(getDirections);
+    const filterFrom = useSelector(getFilterFrom);
+    const filterTo = useSelector(getFilterTo);
     const dispatch = useDispatch<AppDispatch>()
-
-    const buttonsFilter = {
+    const buttonsFilter: Record<Filters, Valuta[]>= {
         'Все': [
             Valuta.BTC,
             Valuta.ETH,
@@ -51,10 +62,33 @@ export const ExchangeCard = () => {
 
     const onChangeSelectFrom = useCallback((value?: string) => {
         dispatch(cardActions.setSelectFrom(value as Valuta));
+        dispatch(cardActions.setFilterTo(Filters.ALL));
+        const selects = filters.filter(el => el.from.code === value)[0].to
+        dispatch(cardActions.setOptionsTo(selects));
     }, [dispatch]);
 
     const onChangeSelectTo = useCallback((value?: string) => {
         dispatch(cardActions.setSelectTo(value as Valuta));
+    }, [dispatch]);
+
+    const onChangeFilterFrom = useCallback((value: Filters) => {
+        dispatch(cardActions.setFilterFrom(value));
+        const selects = optionsFrom.length ?
+        //@ts-ignore
+        optionsFrom.filter(el => buttonsFilter[value].includes(el.code)) :
+        //@ts-ignore
+        directions.filter(el => buttonsFilter[value].includes(el.code))
+        dispatch(cardActions.setOptionsFrom(selects));
+    }, [dispatch]);
+
+    const onChangeFilterTo = useCallback((value: Filters) => {
+        dispatch(cardActions.setFilterTo(value));
+        const selects = optionsTo.length ?
+        //@ts-ignore
+        optionsTo.filter(el => buttonsFilter[value].includes(el.code)) :
+        //@ts-ignore
+        directions.filter(el => buttonsFilter[value].includes(el.code))
+        dispatch(cardActions.setOptionsTo(selects));
     }, [dispatch]);
 
     return (
@@ -62,21 +96,23 @@ export const ExchangeCard = () => {
             <ExchangeField
                 label='Отдаёте'
                 text={valueFrom}
-                options={buttonsFilter.Все}
-                buttons={Object.keys(buttonsFilter)}
+                options={optionsFrom}
                 onChange={onChangeValueFrom}
                 onChangeSelect={onChangeSelectFrom}
                 selectValue={selectFom}
+                onChangeFilter={onChangeFilterFrom}
+                buttonSelect={filterFrom}
             />
             <Exchange className="Icon" />
             <ExchangeField
                 label='Получаете'
                 text={valueTo}
-                options={buttonsFilter.Все}
-                buttons={Object.keys(buttonsFilter)}
+                options={optionsTo}
                 onChange={onChangeValueTo}
                 onChangeSelect={onChangeSelectTo}
                 selectValue={selectTo}
+                onChangeFilter={onChangeFilterTo}
+                buttonSelect={filterTo}
             />
         </div>
     );

@@ -1,9 +1,10 @@
 import { ChangeEvent, useState } from 'react';
+import { ValutaObject } from 'widgets/ExchangeCard/modal/types/CardSchema';
 import './InputWithButton.scss';
 
 interface InputWithButtonProps {
     text?: string;
-    options: string[];
+    options: ValutaObject[];
     selectValue?: string;
     onChange?: (value: string) => void;
     onChangeSelect?: (value: string) => void;
@@ -38,8 +39,8 @@ export const InputWithButton = (props: InputWithButtonProps) => {
                 value={selectValue}
                 onChange={handleChange}
             >
-                {options.map(el => (
-                    <option value={el}>{el}</option>
+                {options.map((el, index) => (
+                    <option value={el.code} key={index}>{el.name}</option>
                 ))}
             </select>
         </div>
